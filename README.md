@@ -92,7 +92,14 @@ Nomad uses excessively safe calls for safe processing of cross-domain messages.
 This guarantees that a message recipient cannot interfere with safe operation
 of the cross-domain communication channel and message processing layer.
 
-## Running Tests
+## Interacting with the repo
+
+**To install in your project**:
+
+- install [Foundry](https://github.com/gakonst/foundry)
+- `forge install nomad-xyz/ExcessivelySafeCall`
+
+**To run tests**:
 
 - install [Foundry](https://github.com/gakonst/foundry)
 - `forge test`

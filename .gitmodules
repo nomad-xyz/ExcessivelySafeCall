@@ -1,0 +1,3 @@
+[submodule "/Users/james/devel/ExcessivelySafeCall/lib/ds-test"]
+	path = /Users/james/devel/ExcessivelySafeCall/lib/ds-test
+	url = https://github.com/dapphub/ds-test

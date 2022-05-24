@@ -28,6 +28,7 @@ contract ContractTest is DSTest {
         (_success, _ret) = target.excessivelySafeCall(
             100_000,
             0,
+            0,
             abi.encodeWithSelector(CallTarget.one.selector)
         );
         assertTrue(_success);
@@ -36,6 +37,7 @@ contract ContractTest is DSTest {
 
         (_success, _ret) = target.excessivelySafeCall(
             100_000,
+            0,
             0,
             abi.encodeWithSelector(CallTarget.two.selector)
         );
@@ -46,11 +48,22 @@ contract ContractTest is DSTest {
         (_success, _ret) = target.excessivelySafeCall(
             100_000,
             0,
+            0,
             abi.encodeWithSelector(CallTarget.any.selector, 5)
         );
         assertTrue(_success);
         assertEq(_ret.length, 0);
         assertEq(t.called(), 5);
+
+        (_success, _ret) = target.excessivelySafeCall(
+            100_000,
+            69,
+            0,
+            abi.encodeWithSelector(CallTarget.payme.selector)
+        );
+        assertTrue(_success);
+        assertEq(_ret.length, 0);
+        assertEq(t.called(), 69);
     }
 
     function testStaticCall() public {
@@ -74,6 +87,7 @@ contract ContractTest is DSTest {
 
         (_success, _ret) = target.excessivelySafeCall(
             100_000,
+            0,
             _maxCopy,
             abi.encodeWithSelector(CallTarget.retBytes.selector, uint256(_requested))
         );
@@ -82,6 +96,7 @@ contract ContractTest is DSTest {
 
         (_success, _ret) = target.excessivelySafeCall(
             100_000,
+            0,
             _maxCopy,
             abi.encodeWithSelector(CallTarget.revBytes.selector, uint256(_requested))
         );
@@ -119,6 +134,7 @@ contract ContractTest is DSTest {
 
         (_success, _ret) = target.excessivelySafeCall(
             3_000_000,
+            0,
             32,
             abi.encodeWithSelector(CallTarget.badRet.selector)
         );
@@ -129,6 +145,7 @@ contract ContractTest is DSTest {
 
         (_success, _ret) = target.excessivelySafeCall(
             3_000_000,
+            0,
             32,
             abi.encodeWithSelector(CallTarget.badRev.selector)
         );
@@ -177,6 +194,10 @@ contract CallTarget {
 
     function any(uint256 _num) external {
         called = _num;
+    }
+
+    function payme() external payable {
+        called = msg.value;
     }
 
     function retBytes(uint256 _bytes) public view {

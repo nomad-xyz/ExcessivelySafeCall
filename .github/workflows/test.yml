@@ -1,0 +1,26 @@
+on: [push]
+
+name: test
+
+jobs:
+  check:
+    name: Foundry project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+      - name: Run tests @ 0.8.13
+        run: forge test -vvv --use 0.8.13
+
+      - name: Run tests @ 0.7.6
+        run: forge test -vvv --use 0.7.6
+
+      - name: Run snapshot
+        run: forge snapshot

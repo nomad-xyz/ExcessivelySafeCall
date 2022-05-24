@@ -1,0 +1,23 @@
+{
+  "name": "@nomad-xyz/excessively-safe-call",
+  "version": "0.0.1-rc.1",
+  "description": "Helps you call untrusted contracts safely",
+  "keywords": [
+    "nomad",
+    "excessively safe call"
+  ],
+  "homepage": "https://github.com/nomad-xyz/ExcessivelySafeCall#readme",
+  "bugs": {
+    "url": "https://github.com/nomad-xyz/ExcessivelySafeCall/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:nomad-xyz/ExcessivelySafeCall.git"
+  },
+  "license": "Apache-2.0 OR MIT",
+  "author": "Illusory Systems Inc.",
+  "main": "src/ExcessivelySafeCall.sol",
+  "files": [
+    "src/ExcessivelySafeCall.sol"
+  ]
+}

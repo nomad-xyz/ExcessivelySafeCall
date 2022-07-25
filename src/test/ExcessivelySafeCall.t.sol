@@ -200,23 +200,23 @@ contract CallTarget {
         called = msg.value;
     }
 
-    function retBytes(uint256 _bytes) public view {
+    function retBytes(uint256 _bytes) public pure {
         assembly {
             return(0, _bytes)
         }
     }
 
-    function revBytes(uint256 _bytes) public view {
+    function revBytes(uint256 _bytes) public pure {
         assembly {
             revert(0, _bytes)
         }
     }
 
-    function badRet() external returns (bytes memory) {
+    function badRet() external pure returns (bytes memory) {
         retBytes(1_000_000);
     }
 
-    function badRev() external{
+    function badRev() external pure {
         revBytes(1_000_000);
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@nomad-xyz/excessively-safe-call",
-  "version": "0.0.1-rc.1",
+  "version": "0.0.1",
   "description": "Helps you call untrusted contracts safely",
   "keywords": [
     "nomad",

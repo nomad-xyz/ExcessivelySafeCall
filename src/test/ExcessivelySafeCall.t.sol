@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity >=0.7.6;
 
-import "ds-test/test.sol";
+import {Test} from "forge-std/Test.sol";
 import "src/ExcessivelySafeCall.sol";
 
-contract ContractTest is DSTest {
+contract ContractTest is Test {
     using ExcessivelySafeCall for address;
 
     address target;
@@ -180,6 +180,7 @@ contract ContractTest is DSTest {
     }
 
     function test_drain() public {
+        vm.expectRevert();
         intermediary.getDrained{gas: 1_000_000}(target, 10_000);
     }
 

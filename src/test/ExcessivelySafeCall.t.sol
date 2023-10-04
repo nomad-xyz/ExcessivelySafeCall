@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 pragma solidity >=0.7.6;
 
-import "ds-test/test.sol";
+import {Test} from "forge-std/Test.sol";
 import "src/ExcessivelySafeCall.sol";
 
-contract ContractTest is DSTest {
+contract ContractTest is Test {
     using ExcessivelySafeCall for address;
 
     address target;
+    Intermediary intermediary;
     CallTarget t;
 
     function returnSize() internal pure returns (uint256 _bytes) {
@@ -19,6 +20,7 @@ contract ContractTest is DSTest {
     function setUp() public {
         t = new CallTarget();
         target = address(t);
+        intermediary = new Intermediary();
     }
 
     function testCall() public {
@@ -177,8 +179,38 @@ contract ContractTest is DSTest {
         assertEq(_ret.length, 32, "revert didn't truncate");
     }
 
+    function test_drain() public {
+        vm.expectRevert();
+        intermediary.getDrained{gas: 1_000_000}(target, 10_000);
+    }
+
+    function test_drain_safe() public {
+        intermediary.getSafeDrained{gas: 1_000_000}(target, 10_000);
+    }
 }
 
+
+contract Intermediary {
+    using ExcessivelySafeCall for address;
+    function getDrained(address target, uint256 drainTo) public {
+        bool _success;
+        bytes memory _ret;
+        (_success, _ret) = target.call(
+            abi.encodeWithSelector(CallTarget.drainTo.selector, drainTo)
+        );
+    }
+
+    function getSafeDrained(address target, uint256 drainTo) public {
+        bool _success;
+        bytes memory _ret;
+        (_success, _ret) = target.excessivelySafeCall(
+            gasleft(),
+            0,
+            0,
+            abi.encodeWithSelector(CallTarget.drainTo.selector, drainTo)
+        );
+    }
+}
 
 contract CallTarget {
     uint256 public called;
@@ -218,5 +250,16 @@ contract CallTarget {
 
     function badRev() external pure {
         revBytes(1_000_000);
+    }
+
+    function drainTo(uint256 gas) public view {
+        uint256 len;
+        while (gasleft() > gas) {
+            bytes memory a = new bytes(0);
+            len += 32 + a.length;
+        }
+        assembly {
+            return (0, len)
+        }
     }
 }

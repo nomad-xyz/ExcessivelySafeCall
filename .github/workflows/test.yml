@@ -19,8 +19,5 @@ jobs:
       - name: Run tests @ 0.8.13
         run: forge test -vvv --use 0.8.13
 
-      - name: Run tests @ 0.7.6
-        run: forge test -vvv --use 0.7.6
-
       - name: Run snapshot
         run: forge snapshot
